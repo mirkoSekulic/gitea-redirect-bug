@@ -1,12 +1,9 @@
 ## Gitea redirection bug
 
-When gitea is hosted to url with subUrl, for example studio.localhost/repos, there is an problem with redirection.
+When Gitea is hosted with a subUrl (e.g., studio.localhost/repos), there seems to be a problem with redirection. 
 
-Lets assume that desired redirection after log in is "/"
-
-If we provide redirect parameter as "/" instead of redirecting to "/" gitea redirects to "/repos".
-The same happens if any other parameter is provided, for example if "/redirected" is passed as redirect_to parameter, gitea redirects to gitea home page instead of "/redirected" page.
-
+If you provide the redirect parameter as “/”, Gitea should redirect to the root (“/”). However, it currently redirects to “/repos”, which is a gitea home page. Similarly, if you pass any other parameter (e.g., “/redirected”) as the redirect_to parameter, Gitea redirects to the Gitea homepage rather than the specified page.
+The same issue exists with the OIDC (OpenID Connect) flow.
 
 
 ## Steps to reproduce
@@ -16,6 +13,8 @@ The same happens if any other parameter is provided, for example if "/redirected
 4. open http://studio.localhost linke in browser
 5. click login with redirect button
 6. type adminUser and test1234$ as credentials
-7. If redirection is ok page with `Redirected after gitea login` content should be shown
+7. If redirection is ok page with `Redirected after gitea login` content should be shown, which doesn't happen with 1.22.0 version
 
-## Notes currently compose contains last version of gitea that doesn't contain a bug. For checking current behaviour change to version .21.10-rootless in the compose file.
+## Notes 
+
+To check the expected redirection behaviour use the 1.21.10-rootless image in the compose.yaml file.
