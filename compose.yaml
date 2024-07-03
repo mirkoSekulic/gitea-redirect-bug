@@ -1,0 +1,50 @@
+services:
+  loadbalancer:
+    image: nginx:alpine
+    container_name: loadbalancer
+    restart: always
+    ports:
+      - '80:80'
+    environment:
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/
+      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.conf
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    depends_on:
+      - gitea
+    volumes:
+      - ./mnt/nginx.conf:/etc/nginx/templates/nginx.conf.conf
+    links:
+      - gitea:gitea
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:1.21.10-rootless
+    restart: always
+    environment:
+      - GITEA____RUN_MODE=prod
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__PASSWD=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__server__ROOT_URL=http://studio.localhost/repos
+      - GITEA__security__INSTALL_LOCK=true
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    build:
+      context: ./gitea/
+
+  db:
+    container_name: db
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: gitea
+      POSTGRES_USER: gitea
+      POSTGRES_DB: gitea
+    ports:
+      - '5432:5432'
+
