@@ -19,7 +19,7 @@ docker-compose up -d
 ```sh
 docker exec gitea gitea admin user create --username adminUser --password test1234$ --email admin@localhost --admin
 ```
-4. Open the link [http://studio.localhost](http://studio.localhost) in your browser.
+4. Open the link [http://studio.localhost](http:/studio.localhost) in your browser.
 5. Click the "Login with Redirect" button.
 6. Enter the credentials for the `adminUser` account (username: `adminUser`, password: `test1234$`).
 7. Observe that redirection occurs to the Gitea home page.
