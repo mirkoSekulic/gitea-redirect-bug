@@ -6,15 +6,24 @@ If you provide the redirect parameter as “/”, Gitea should redirect to the r
 The same issue exists with the OIDC (OpenID Connect) flow.
 
 
-## Steps to reproduce
-1. add `127.0.0.1   studio.localhost` line in /etc/hosts file
-2. run  
-3. run docker exec gitea gitea admin user create --username adminUser --password test1234$ --email admin@localhost --admin
-4. open http://studio.localhost linke in browser
-5. click login with redirect button
-6. type adminUser and test1234$ as credentials
-7. If redirection is ok page with `Redirected after gitea login` content should be shown, which doesn't happen with 1.22.0 version
+## Steps to Reproduce
+1. Add the following line to your `/etc/hosts` file:
+```text
+127.0.0.1 studio.localhost
+```
+2. Run the following command to start the Docker containers:
+```sh
+docker-compose up -d
+```
+3. Create an admin user using the following command:
+```sh
+docker exec gitea gitea admin user create --username adminUser --password test1234$ --email admin@localhost --admin
+```
+4. Open the link [http://studio.localhost](http://studio.localhost) in your browser.
+5. Click the "Login with Redirect" button.
+6. Enter the credentials for the `adminUser` account (username: `adminUser`, password: `test1234$`).
+7. Observe that redirection occurs to the Gitea home page.
 
-## Notes 
-
-To check the expected redirection behaviour use the 1.21.10-rootless image in the compose.yaml file.
+## Notes
+If redirection is successful, the page with the content "Redirected after Gitea login" should be displayed.
+To verify the expected redirection behavior, use `1.21.10-rootless` image in `compose.yaml` file. The bug is introduced after version 1.21.10
